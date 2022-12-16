@@ -1,0 +1,110 @@
+package tictactoe
+
+fun pole(b: String) {
+    println(
+        """
+        ---------
+        | ${b[0]} ${b[1]} ${b[2]} |
+        | ${b[3]} ${b[4]} ${b[5]} |
+        | ${b[6]} ${b[7]} ${b[8]} |
+        ---------
+    """.trimIndent()
+    )
+}
+
+fun stepX(b: String): String {
+    var turn = false
+    val arr = arrayOf(
+        charArrayOf(b[0], b[1], b[2]),
+        charArrayOf(b[3], b[4], b[5]),
+        charArrayOf(b[6], b[7], b[8])
+    )
+    while (!turn) try {
+        val hod = readln().split(' ').map { it.toInt() }.toMutableList()
+        hod[0]--
+        hod[1]--
+        if (hod[0] in 0..2) {
+            if (hod[1] in 0..2) {
+                if (arr[hod[0]][hod[1]] != '_') {
+                    println("This cell is occupied! Choose another one!")
+                } else {
+                    arr[hod[0]][hod[1]] = 'X'
+                    turn = true
+                }
+            } else println("Coordinates should be from 1 to 3!")
+
+        } else println("Coordinates should be from 1 to 3!")
+    } catch (e: NumberFormatException) {
+        println("You should enter numbers!")
+    }
+    return String(arr[0] + arr[1] + arr[2])
+}
+
+fun stepO(b: String): String {
+    var turn = false
+    val arr = arrayOf(
+        charArrayOf(b[0], b[1], b[2]),
+        charArrayOf(b[3], b[4], b[5]),
+        charArrayOf(b[6], b[7], b[8])
+    )
+    while (!turn) try {
+        val hod = readln().split(' ').map { it.toInt() }.toMutableList()
+        hod[0]--
+        hod[1]--
+        if (hod[0] in 0..2) {
+            if (hod[1] in 0..2) {
+                if (arr[hod[0]][hod[1]] != '_') {
+                    println("This cell is occupied! Choose another one!")
+                } else {
+                    arr[hod[0]][hod[1]] = 'O'
+                    turn = true
+                }
+            } else println("Coordinates should be from 1 to 3!")
+
+        } else println("Coordinates should be from 1 to 3!")
+    } catch (e: NumberFormatException) {
+        println("You should enter numbers!")
+    }
+    return String(arr[0] + arr[1] + arr[2])
+}
+
+fun checkWin(b: String): Boolean {
+    return when {
+        b[0] == b[1] && b[1] == b[2] && b[1] != '_' -> true
+        b[3] == b[4] && b[4] == b[5] && b[4] != '_' -> true
+        b[6] == b[7] && b[7] == b[8] && b[7] != '_' -> true
+        b[0] == b[3] && b[3] == b[6] && b[3] != '_' -> true
+        b[1] == b[4] && b[4] == b[7] && b[4] != '_' -> true
+        b[2] == b[5] && b[5] == b[8] && b[5] != '_' -> true
+        b[0] == b[4] && b[4] == b[8] && b[4] != '_' -> true
+        b[2] == b[4] && b[4] == b[6] && b[4] != '_' -> true
+        else -> false
+    }
+}
+
+fun main() {
+    var pol = "_________"
+    pole(pol)
+    var Win = false
+    while (!Win) {
+        println("Enter step: ")
+        pol = stepX(pol)
+        pole(pol)
+        Win = checkWin(pol)
+        if (Win) {
+            println("X wins")
+            break
+        }
+        if (!pol.contains('_')) {
+            println("Draw")
+            break
+        }
+        pol = stepO(pol)
+        pole(pol)
+        Win = checkWin(pol)
+        if (Win) {
+            println("O wins")
+            break
+        }
+    }
+}
